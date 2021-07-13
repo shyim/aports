@@ -17,5 +17,5 @@ jobs:
         run: |
           mkdir out
           sudo chown -R 1000:1000 out
-          docker run --rm -it -e ALPINE_VERSION=v3.14 -v $(pwd)/out:/home/buildozer/out -v $(pwd)/build.sh:/usr/local/bin/build.sh alpinelinux/alpine-gitlab-ci:latest ash /usr/local/bin/build.sh
+          docker run --rm -e ALPINE_VERSION=v3.14 -v $(pwd)/out:/home/buildozer/out -v $(pwd)/build.sh:/usr/local/bin/build.sh alpinelinux/alpine-gitlab-ci:latest ash /usr/local/bin/build.sh
           ls out/*

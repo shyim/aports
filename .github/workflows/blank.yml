@@ -18,6 +18,7 @@ jobs:
 
       - name: Set up Docker Buildx
         id: buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Login into Github Docker Registery
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u shyim --password-stdin

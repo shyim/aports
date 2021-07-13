@@ -19,3 +19,11 @@ jobs:
           sudo chown -R 1000:1000 out
           docker run --rm -e ALPINE_VERSION=v3.14 -v $(pwd)/out:/home/buildozer/out -v $(pwd)/build.sh:/usr/local/bin/build.sh alpinelinux/alpine-gitlab-ci:latest ash /usr/local/bin/build.sh
           ls out/*
+
+      - name: Login into Github Docker Registery
+        run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u shyim --password-stdin
+        
+      - name: Build image
+        run: |
+          docker build -t ghcr.io/shyim/gnu-libiconv:v3.14 .
+          docker push ghcr.io/shyim/gnu-libiconv:v3.14

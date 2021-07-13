@@ -11,19 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.
       
-      - name: Run Build
-        run: |
-          mkdir out
-          sudo chown -R 1000:1000 out
-          docker run --rm -e ALPINE_VERSION=v3.14 -v $(pwd)/out:/home/buildozer/out -v $(pwd)/build.sh:/usr/local/bin/build.sh alpinelinux/alpine-gitlab-ci:latest ash /usr/local/bin/build.sh
-          ls out/*
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        id: buildx
 
       - name: Login into Github Docker Registery
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u shyim --password-stdin
         
       - name: Build image
         run: |
-          docker build -t ghcr.io/shyim/gnu-libiconv:v3.14 .
-          docker push ghcr.io/shyim/gnu-libiconv:v3.14
+          docker buildx build --platform linux/amd64,linux/arm64 --tag ghcr.io/shyim/gnu-libiconv:v3.14 --push .
